@@ -343,6 +343,7 @@ public:
         m_keyboards[m_keyboardCount++] = keyb;
     }
 
+    bool setMyCommands(const String &&json);
     // set custom commands for bot
     // params
     //   command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.

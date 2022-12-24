@@ -763,6 +763,11 @@ bool AsyncTelegram2::deleteMyCommands()
     return true;
 }
 
+bool AsyncTelegram2::setMyCommands(const String &&json) {
+  bool result = sendCommand("setMyCommands", json.c_str(), true);
+  return result;
+}
+
 bool AsyncTelegram2::setMyCommands(const String &cmd, const String &desc)
 {
 
@@ -796,13 +801,10 @@ bool AsyncTelegram2::setMyCommands(const String &cmd, const String &desc)
     StaticJsonDocument<BUFFER_MEDIUM> doc2;
     doc2["commands"] = doc["result"].as<JsonArray>();
 
-    size_t len = measureJson(doc2);
-    char payload[len + 1];
-    serializeJson(doc2, payload, len);
+    String payload;
+    serializeJson(doc2, payload);
     debugJson(doc2, Serial);
-
-    bool result = sendCommand("setMyCommands", payload, true);
-    return result;
+    return setMyCommands(std::move(payload));
 }
 
 bool AsyncTelegram2::editMessage(int32_t chat_id, int32_t message_id, const String &txt, const String &keyboard)
